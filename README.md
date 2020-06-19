@@ -41,44 +41,44 @@ the Directory parameter are set then the current location will be used.
 
 Given the following directory structure:
 
-📦flatten me
- ┣ 📂parent a
- ┃ ┣ 📂sub a
- ┃ ┃ ┣ 📜a a New Text Document - Copy (2).txt
- ┃ ┃ ┣ 📜a a New Text Document - Copy.txt
- ┃ ┃ ┗ 📜a a New Text Document.txt
- ┃ ┣ 📂sub b
- ┃ ┃ ┣ 📜a b New Text Document - Copy (2).txt
- ┃ ┃ ┣ 📜a b New Text Document - Copy.txt
- ┃ ┃ ┗ 📜a b New Text Document.txt
- ┃ ┣ 📂sub c
- ┃ ┃ ┣ 📜a c New Text Document - Copy (2).txt
- ┃ ┃ ┣ 📜a c New Text Document - Copy.txt
- ┃ ┃ ┗ 📜a c New Text Document.txt
- ┃ ┗ 📂sub d
- ┃ ┃ ┣ 📜a c New Text Document - Copy.txt
- ┃ ┃ ┣ 📜New Text Document - Copy (2).txt
- ┃ ┃ ┗ 📜New Text Document.txt
- ┣ 📂parent b
- ┃ ┣ 📂sub a
- ┃ ┃ ┣ 📜New Text Document - Copy (2).txt
- ┃ ┃ ┣ 📜New Text Document - Copy.txt
- ┃ ┃ ┗ 📜New Text Document.txt
- ┃ ┣ 📂sub b
- ┃ ┃ ┣ 📜b New Text Document - Copy (2).txt
- ┃ ┃ ┣ 📜b New Text Document - Copy.txt
- ┃ ┃ ┗ 📜b New Text Document.txt
- ┃ ┣ 📂sub c
- ┃ ┃ ┣ 📜c New Text Document - Copy (2).txt
- ┃ ┃ ┣ 📜c New Text Document - Copy.txt
- ┃ ┃ ┗ 📜c New Text Document.txt
- ┃ ┗ 📂sub d
- ┃ ┃ ┣ 📜c New Text Document - Copy.txt
- ┃ ┃ ┣ 📜New Text Document - Copy (2).txt
- ┃ ┃ ┗ 📜New Text Document.txt
+📦flatten me<br />
+ ┣ 📂parent a<br />
+ ┃ ┣ 📂sub a<br />
+ ┃ ┃ ┣ 📜a a New Text Document - Copy (2).txt<br />
+ ┃ ┃ ┣ 📜a a New Text Document - Copy.txt<br />
+ ┃ ┃ ┗ 📜a a New Text Document.txt<br />
+ ┃ ┣ 📂sub b<br />
+ ┃ ┃ ┣ 📜a b New Text Document - Copy (2).txt<br />
+ ┃ ┃ ┣ 📜a b New Text Document - Copy.txt<br />
+ ┃ ┃ ┗ 📜a b New Text Document.txt<br />
+ ┃ ┣ 📂sub c<br />
+ ┃ ┃ ┣ 📜a c New Text Document - Copy (2).txt<br />
+ ┃ ┃ ┣ 📜a c New Text Document - Copy.txt<br />
+ ┃ ┃ ┗ 📜a c New Text Document.txt<br />
+ ┃ ┗ 📂sub d<br />
+ ┃ ┃ ┣ 📜a c New Text Document - Copy.txt<br />
+ ┃ ┃ ┣ 📜New Text Document - Copy (2).txt<br />
+ ┃ ┃ ┗ 📜New Text Document.txt<br />
+ ┣ 📂parent b<br />
+ ┃ ┣ 📂sub a<br />
+ ┃ ┃ ┣ 📜New Text Document - Copy (2).txt<br />
+ ┃ ┃ ┣ 📜New Text Document - Copy.txt<br />
+ ┃ ┃ ┗ 📜New Text Document.txt<br />
+ ┃ ┣ 📂sub b<br />
+ ┃ ┃ ┣ 📜b New Text Document - Copy (2).txt<br />
+ ┃ ┃ ┣ 📜b New Text Document - Copy.txt<br />
+ ┃ ┃ ┗ 📜b New Text Document.txt<br />
+ ┃ ┣ 📂sub c<br />
+ ┃ ┃ ┣ 📜c New Text Document - Copy (2).txt<br />
+ ┃ ┃ ┣ 📜c New Text Document - Copy.txt<br />
+ ┃ ┃ ┗ 📜c New Text Document.txt<br />
+ ┃ ┗ 📂sub d<br />
+ ┃ ┃ ┣ 📜c New Text Document - Copy.txt<br />
+ ┃ ┃ ┣ 📜New Text Document - Copy (2).txt<br />
+ ┃ ┃ ┗ 📜New Text Document.txt<br />
  ┗ 📂parent c
 
-Ruuning the following command...
+Running the following command...
 
 ```powershell
 PS C:\>@("C:\temp\flatten me\parent a","C:\temp\flatten me\parent b","C:\temp\flatten me\parent c") | Invoke-FlattenFolders -Force -DeleteSubDirectories
@@ -86,33 +86,33 @@ PS C:\>@("C:\temp\flatten me\parent a","C:\temp\flatten me\parent b","C:\temp\fl
 
 ...will move all files from each parent directory's sub-directories into the parent directory and then delete the sub-directories. Files with duplicate names will have a Guid appended to their file names. The result will look like this:
 
-📦flatten me
- ┣ 📂parent a
- ┃ ┣ 📜a a New Text Document - Copy (2).txt
- ┃ ┣ 📜a a New Text Document - Copy.txt
- ┃ ┣ 📜a a New Text Document.txt
- ┃ ┣ 📜a b New Text Document - Copy (2).txt
- ┃ ┣ 📜a b New Text Document - Copy.txt
- ┃ ┣ 📜a b New Text Document.txt
- ┃ ┣ 📜a c New Text Document - Copy (2).txt
- ┃ ┣ 📜a c New Text Document - Copy_58888d2c-b089-472b-b166-742701456252.txt
- ┃ ┣ 📜a c New Text Document - Copy_59612b2e-d42b-474d-b522-1ffdc4e302fb.txt
- ┃ ┣ 📜a c New Text Document.txt
- ┃ ┣ 📜New Text Document - Copy (2).txt
- ┃ ┗ 📜New Text Document.txt
- ┣ 📂parent b
- ┃ ┣ 📜b New Text Document - Copy (2).txt
- ┃ ┣ 📜b New Text Document - Copy.txt
- ┃ ┣ 📜b New Text Document.txt
- ┃ ┣ 📜c New Text Document - Copy (2).txt
- ┃ ┣ 📜c New Text Document - Copy_1e57ea51-bc54-4f44-a1db-98257b4e839b.txt
- ┃ ┣ 📜c New Text Document - Copy_eb5b533c-19b5-4898-9c60-5edc6e6d7ceb.txt
- ┃ ┣ 📜c New Text Document.txt
- ┃ ┣ 📜New Text Document - Copy (2)_2a39376b-7b8b-4087-bfc4-7c0f25cfc96e.txt
- ┃ ┣ 📜New Text Document - Copy (2)_6ab8a5a8-a7b7-4e2b-8eb2-c6e64d7458ea.txt
- ┃ ┣ 📜New Text Document - Copy.txt
- ┃ ┣ 📜New Text Document_0495b454-56d7-41a6-9f6c-f4ce39a35c3a.txt
- ┃ ┗ 📜New Text Document_79c2dd84-b1bf-4660-ba10-3229848b867f.txt
+📦flatten me<br />
+ ┣ 📂parent a<br />
+ ┃ ┣ 📜a a New Text Document - Copy (2).txt<br />
+ ┃ ┣ 📜a a New Text Document - Copy.txt<br />
+ ┃ ┣ 📜a a New Text Document.txt<br />
+ ┃ ┣ 📜a b New Text Document - Copy (2).txt<br />
+ ┃ ┣ 📜a b New Text Document - Copy.txt<br />
+ ┃ ┣ 📜a b New Text Document.txt<br />
+ ┃ ┣ 📜a c New Text Document - Copy (2).txt<br />
+ ┃ ┣ 📜a c New Text Document - Copy_58888d2c-b089-472b-b166-742701456252.txt<br />
+ ┃ ┣ 📜a c New Text Document - Copy_59612b2e-d42b-474d-b522-1ffdc4e302fb.txt<br />
+ ┃ ┣ 📜a c New Text Document.txt<br />
+ ┃ ┣ 📜New Text Document - Copy (2).txt<br />
+ ┃ ┗ 📜New Text Document.txt<br />
+ ┣ 📂parent b<br />
+ ┃ ┣ 📜b New Text Document - Copy (2).txt<br />
+ ┃ ┣ 📜b New Text Document - Copy.txt<br />
+ ┃ ┣ 📜b New Text Document.txt<br />
+ ┃ ┣ 📜c New Text Document - Copy (2).txt<br />
+ ┃ ┣ 📜c New Text Document - Copy_1e57ea51-bc54-4f44-a1db-98257b4e839b.txt<br />
+ ┃ ┣ 📜c New Text Document - Copy_eb5b533c-19b5-4898-9c60-5edc6e6d7ceb.txt<br />
+ ┃ ┣ 📜c New Text Document.txt<br />
+ ┃ ┣ 📜New Text Document - Copy (2)_2a39376b-7b8b-4087-bfc4-7c0f25cfc96e.txt<br />
+ ┃ ┣ 📜New Text Document - Copy (2)_6ab8a5a8-a7b7-4e2b-8eb2-c6e64d7458ea.txt<br />
+ ┃ ┣ 📜New Text Document - Copy.txt<br />
+ ┃ ┣ 📜New Text Document_0495b454-56d7-41a6-9f6c-f4ce39a35c3a.txt<br />
+ ┃ ┗ 📜New Text Document_79c2dd84-b1bf-4660-ba10-3229848b867f.txt<br />
  ┗ 📂parent c
 
 All files in all sub-directories in the current location (C:\) will be moved to the current location (C:\) with a 
