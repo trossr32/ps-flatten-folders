@@ -37,7 +37,7 @@ the Directory parameter are set then the current location will be used.
 #### -DeleteSubDirectories (alias -DS)
 *Optional*. If supplied all subdirectories will be deleted once all files have been moved.
 
-## Examples
+## Example
 
 Given the following directory structure:
 
@@ -114,6 +114,8 @@ PS C:\>@("C:\temp\flatten me\parent a","C:\temp\flatten me\parent b","C:\temp\fl
  ┃ ┣ 📜New Text Document_0495b454-56d7-41a6-9f6c-f4ce39a35c3a.txt<br />
  ┃ ┗ 📜New Text Document_79c2dd84-b1bf-4660-ba10-3229848b867f.txt<br />
  ┗ 📂parent c
+ 
+ ## Further examples
 
 All files in all sub-directories in the current location (C:\) will be moved to the current location (C:\) with a 
 confirmation prompt before moving:
