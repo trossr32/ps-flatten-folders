@@ -193,8 +193,10 @@ function Invoke-FlattenFolders {
             $duplicates = (Get-DuplicateFiles -dir $dir)
 
             Get-ChildItem $dir -Recurse -File | Group-Object FullName | Select-Object Name | ForEach-Object {
-                if ($duplicates -contains (Split-Path $_.Name -leaf)) {
-                    $newName = ((Split-Path $_.Name -LeafBase) + "_" + [GUID]::NewGuid().ToString('D') + (Split-Path $_.Name -Extension))
+                Write-Host ""
+
+                if ($duplicates -contains [io.path]::GetFileName($_.Name)) {
+                    $newName = (([io.path]::GetFileNameWithoutExtension($_.Name)) + "_" + [GUID]::NewGuid().ToString('D') + [io.path]::GetExtension($_.Name))
 
                     Rename-Item -Path $_.Name -NewName $newName
 
