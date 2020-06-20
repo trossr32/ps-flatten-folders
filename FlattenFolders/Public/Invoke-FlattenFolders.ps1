@@ -162,8 +162,18 @@ function Invoke-FlattenFolders {
             $cDirs = $dirs.Length
             $cSubDirs = $subDirs.Length
             $cFiles = $files.Length
-            $nDir = $cDirs -gt 1 ? "directories" : "directory"
-            $nSub = $PSBoundParameters.ContainsKey('DeleteSubDirectories') ? "and delete all sub-directories" : ""
+            
+            $nDir = "directory"
+            
+            if ($cDirs -gt 1) {
+                $ndir = "directories"
+            }
+
+            $nSub = ""
+            
+            if ($PSBoundParameters.ContainsKey('DeleteSubDirectories')) {
+                $nSub = "and delete all sub-directories"
+            }
 
             $header = "You are about to move $cFiles files from $cSubDirs sub-directories into $cDirs parent $nDir $nSub"
             $question = "Are you sure you want to continue?"
