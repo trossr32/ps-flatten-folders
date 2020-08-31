@@ -4,18 +4,16 @@ A Powershell module that moves files from all sub-directories to the parent dire
 Available in the [Powershell Gallery](https://www.powershellgallery.com/packages/FlattenFolders)
 
 ## Description
-Moves files from all sub-directories to the parent directory. If files with duplicate names are found then their file name
-will have a guid appended to make them unique.
+Moves files from all sub-directories to the parent directory. If files with duplicate names are found then their file name will have a guid appended to make them unique.
 
-Unless the Force parameter is used there will be a prompt for confirmation before both the renaming of any files (if required)
-and the moving of any files.
+Unless the Force parameter is used there will be a prompt for confirmation before both the renaming of any files (if required) and the moving of any files.
 
 Can be run against: 
 
 * a single directory
 * a collection of directories piped into the module.
 
-## Installation (from the Poweshell Gallery)
+## Installation (from the Powershell Gallery)
 
 ```powershell
 Install-Module FlattenFolders
@@ -24,18 +22,16 @@ Install-Module FlattenFolders
 ## Parameters
 
 #### -Directory (alias -D)
-*Optional*. The parent directory where files from all sub-directories will be moved. If neither this nor the Directories
-parameter are set then the current location will be used.
+*Optional*. The parent directory where files from all sub-directories will be moved. If neither this nor the Directories parameter are set then the current location will be used.
 
 #### -Directories
-*Optional*. A collection of parent directories where files from all sub-directories will be moved. If neither this nor 
-the Directory parameter are set then the current location will be used.
+*Optional*. A collection of parent directories where files from all sub-directories will be moved. If neither this nor the Directory parameter are set then the current location will be used.
 
 #### -Force (alias -F)
 *Optional*. If supplied this bypasses the confirmation prompt before both renaming and moving files.
 
 #### -DeleteSubDirectories (alias -DS)
-*Optional*. If supplied all subdirectories will be deleted once all files have been moved.
+*Optional*. If supplied all sub-directories will be deleted once all files have been moved.
 
 ## Example
 
@@ -117,8 +113,7 @@ PS C:\>@("C:\temp\flatten me\parent a","C:\temp\flatten me\parent b","C:\temp\fl
  
  ## Further examples
 
-All files in all sub-directories in the current location (C:\) will be moved to the current location (C:\) with a 
-confirmation prompt before moving:
+All files in all sub-directories in the current location (C:\) will be moved to the current location (C:\) with a confirmation prompt before moving:
 
 ```powershell
 PS C:\> Invoke-FlattenFolder
@@ -130,15 +125,13 @@ All files in all sub-directories in C:\Videos\ will be moved to C:\Videos\ witho
 PS C:\> Invoke-FlattenFolder -Directory "C:\Videos" -Force
 ```
 
-All files in all sub-directories in C:\Videos\ will be moved to C:\Videos\ without a confirmation prompt and all
-sub-directories will be deleted once the files have been moved:
+All files in all sub-directories in C:\Videos\ will be moved to C:\Videos\ without a confirmation prompt and all sub-directories will be deleted once the files have been moved:
 
 ```powershell
 PS C:\> Invoke-FlattenFolder -Directory "C:\Videos" -Force -DeleteSubDirectories
 ```
 
-All files in all sub-directories in the piped array of directories (C:\Videos\ and C:\Music\) will be moved to their 
-respective parents with a confirmation prompt before moving:
+All files in all sub-directories in the piped array of directories (C:\Videos\ and C:\Music\) will be moved to their respective parents with a confirmation prompt before moving:
 
 ```powershell
 PS C:\> "C:\Videos\","C:\Music\" | Invoke-FlattenFolder
