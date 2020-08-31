@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Management.Automation;
 using System.Text.RegularExpressions;
+using FlattenFolders;
 using NUnit.Framework;
 
 namespace PsFlattenFoldersCmdlet.Tests

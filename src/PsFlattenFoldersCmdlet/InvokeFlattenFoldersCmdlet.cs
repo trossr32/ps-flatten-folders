@@ -6,7 +6,7 @@ using System.Linq;
 using System.Management.Automation;
 using System.Management.Automation.Host;
 
-namespace PsFlattenFoldersCmdlet
+namespace FlattenFolders
 {
     /// <summary>
     /// <para type="synopsis">Moves files from all sub-directories to the parent directory and optionally delete sub-directories.</para>

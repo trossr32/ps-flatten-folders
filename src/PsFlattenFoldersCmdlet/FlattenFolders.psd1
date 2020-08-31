@@ -9,13 +9,13 @@
 @{
 
     # Script module or binary module file associated with this manifest.
-    RootModule           = 'PsFlattenFoldersCmdlet.dll'
+    RootModule           = 'FlattenFolders.dll'
 
     # Version number of this module.
     ModuleVersion        = '1.1.0'
 
     # Supported PSEditions
-    CompatiblePSEditions = 'Desktop'
+    CompatiblePSEditions = 'Desktop', 'Core'
 
     # ID used to uniquely identify this module
     GUID                 = 'f742943a-8115-4bd7-a71e-b44d6717233b'

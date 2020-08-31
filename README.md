@@ -15,7 +15,7 @@ Can be run against:
 * a single directory
 * a collection of directories piped into the module.
 
-## Installation
+## Installation (from the Poweshell Gallery)
 
 ```powershell
 Install-Module FlattenFolders
@@ -143,3 +143,34 @@ respective parents with a confirmation prompt before moving:
 ```powershell
 PS C:\> "C:\Videos\","C:\Music\" | Invoke-FlattenFolder
 ```
+
+## Building the module and importing locally
+
+### Build the .NET core solution
+
+```powershell
+dotnet build [Github clone/download directory]\ps-flatten-folders\src\PsFlattenFoldersCmdlet.sln
+```
+
+### Copy the built files to your Powershell modules directory
+
+Remove any existing installation in this directory, create a new module directory and copy all the built files.
+
+```powershell
+Remove-Item "C:\Users\[User]\Documents\PowerShell\Modules\FlattenFolders" -Recurse -Force -ErrorAction SilentlyContinue
+New-Item -Path 'C:\Users\[User]\Documents\PowerShell\Modules\FlattenFolders' -ItemType Directory
+Get-ChildItem -Path "[Github clone/download directory]\ps-flatten-folders\src\PsFlattenFoldersCmdlet\bin\Debug\netcoreapp3.1\" | Copy-Item -Destination "C:\Users\[User]\Documents\PowerShell\Modules\FlattenFolders" -Recurse
+```
+
+### Import the module to your session
+
+```powershell
+Import-Module "C:\Users\[User]\Documents\PowerShell\Modules\FlattenFolders\FlattenFolders.dll"
+```
+
+## Notes
+
+Initially this module was written in native Powershell but has since been upgraded to a .NET core 3.1 Cmdlet. I've archived the Powershell version in case anyone is interested in viewing teh differences between the 2 implementations.
+
+- The .NET core version of the module is in the (https://github.com/trossr32/ps-flatten-folders/tree/master/src)[src] directory.
+- The Native Powershell version is in the (https://github.com/trossr32/ps-flatten-folders/tree/master/Ω Archive - Native Powershell version - FlattenFolders)[Ω Archive - Native Powershell version - FlattenFolders] directory.
