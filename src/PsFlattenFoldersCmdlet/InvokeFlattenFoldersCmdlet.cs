@@ -8,22 +8,79 @@ using System.Management.Automation.Host;
 
 namespace PsFlattenFoldersCmdlet
 {
+    /// <summary>
+    /// <para type="synopsis">Moves files from all sub-directories to the parent directory and optionally delete sub-directories.</para>
+    /// <para type="description">
+    /// Moves files from all sub-directories to the parent directory.If files with duplicate names are found then their file name will have a guid appended to make them unique.
+    /// </para>
+    /// <para type="description">
+    /// Unless the Force parameter is used there will be a prompt for confirmation before both the renaming of any files (if required) and the moving of any files.
+    /// </para>
+    /// <para type="description">
+    /// Can be run against:
+    /// </para>
+    /// <para type="description">
+    /// > a single directory
+    /// </para>
+    /// <para type="description">
+    /// > a collection of directories piped into the module.
+    /// </para>
+    /// <example>
+    ///     <para>All files in all sub-directories in the current location (C:\) will be moved to the current location(C:\) with a confirmation prompt before moving:</para>
+    ///     <code>PS C:\> Invoke-FlattenFolder</code>
+    /// </example>
+    /// <example>
+    ///     <para>All files in all sub-directories in C:\Videos\ will be moved to C:\Videos\ without a confirmation prompt:</para>
+    ///     <code>PS C:\> Invoke-FlattenFolder -Directory "C:\Videos" -Force</code>
+    /// </example>
+    /// <example>
+    ///     <para>All files in all sub-directories in C:\Videos\ will be moved to C:\Videos\ without a confirmation prompt and all sub-directories will be deleted once the files have been moved:</para>
+    ///     <code>PS C:\> Invoke-FlattenFolder -Directory "C:\Videos" -Force -DeleteSubDirectories</code>
+    /// </example>
+    /// <example>
+    ///     <para>All files in all sub-directories in the piped array of directories(C:\Videos\ and C:\Music\) will be moved to their respective parents with a confirmation prompt before moving:</para>
+    ///     <code>PS C:\> "C:\Videos\","C:\Music\" | Invoke-FlattenFolder</code>
+    /// </example>
+    /// <para type="link" uri="(https://github.com/trossr32/ps-flatten-folders)">[Github]</para>
+    /// </summary>
     [Cmdlet(VerbsLifecycle.Invoke, "FlattenFolders", HelpUri = "https://github.com/trossr32/ps-flatten-folders")]
     public class InvokeFlattenFoldersCmdlet : PSCmdlet
     {
         #region Parameters
 
+        /// <summary>
+        /// <para type="description">
+        /// The parent directory where files from all sub-directories will be moved.
+        /// If neither this nor the Directories parameter are set then the current location will be used.
+        /// </para>
+        /// </summary>
         [Parameter(Mandatory = false, Position = 0)]
         [Alias("D")]
         public string Directory { get; set; }
 
+        /// <summary>
+        /// <para type="description">
+        /// A collection of parent directories where files from all sub-directories will be moved.
+        /// If neither this nor the Directory parameter are set then the current location will be used.
+        /// </para>
+        /// </summary>
         [Parameter(Mandatory = false, ValueFromPipeline = true)]
         public List<string> Directories { get; set; }
 
+        /// <summary>
+        /// <para type="description">
+        /// If supplied this bypasses the confirmation prompt before both renaming and moving files.
+        /// </para>
+        /// </summary>
         [Parameter(Mandatory = false)]
         [Alias("F")]
         public SwitchParameter Force { get; set; }
 
+        /// <summary>
+        /// <para type="description">
+        /// If supplied all subdirectories will be deleted once all files have been moved.
+        /// </para>
+        /// </summary>
         [Parameter(Mandatory = false)]
         [Alias("DS")]
         public SwitchParameter DeleteSubDirectories { get; set; }
