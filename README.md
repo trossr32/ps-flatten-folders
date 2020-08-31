@@ -17,6 +17,7 @@ Can be run against:
 
 ```powershell
 Install-Module FlattenFolders
+Import-Module FlattenFolders
 ```
 
 ## Parameters
