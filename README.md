@@ -1,4 +1,8 @@
 # FlattenFolders
+
+[![PowerShell Gallery Version](https://img.shields.io/powershellgallery/v/FlattenFolders?label=FlattenFolders&logo=powershell&style=plastic)](https://www.powershellgallery.com/packages/FlattenFolders)
+[![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/FlattenFolders?style=plastic)](https://www.powershellgallery.com/packages/FlattenFolders)
+
 A Powershell module that moves files from all sub-directories to the parent directory.
 
 Available in the [Powershell Gallery](https://www.powershellgallery.com/packages/FlattenFolders)
