@@ -12,10 +12,10 @@
     RootModule           = 'FlattenFolders.dll'
 
     # Version number of this module.
-    ModuleVersion        = '1.1.1'
+    ModuleVersion        = '1.1.2'
 
     # Supported PSEditions
-    CompatiblePSEditions = 'Desktop', 'Core'
+    CompatiblePSEditions = 'Core'
 
     # ID used to uniquely identify this module
     GUID                 = 'f742943a-8115-4bd7-a71e-b44d6717233b'
@@ -33,7 +33,7 @@
     Description          = 'A Powershell module that moves files from all sub-directories to the parent directory.'
 
     # Minimum version of the Windows PowerShell engine required by this module
-    PowerShellVersion    = '5.1'
+    PowerShellVersion    = '7.0'
 
     # Name of the Windows PowerShell host required by this module
     # PowerShellHostName = ''

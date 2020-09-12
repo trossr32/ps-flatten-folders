@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FlattenFolders</name>
+    </assembly>
+    <members>
+        <member name="T:FlattenFolders.InvokeFlattenFoldersCmdlet">
+            <summary>
+            <para type="synopsis">Moves files from all sub-directories to the parent directory and optionally delete sub-directories.</para>
+            <para type="description">
+            Moves files from all sub-directories to the parent directory.If files with duplicate names are found then their file name will have a guid appended to make them unique.
+            </para>
+            <para type="description">
+            Unless the Force parameter is used there will be a prompt for confirmation before both the renaming of any files (if required) and the moving of any files.
+            </para>
+            <para type="description">
+            Can be run against:
+            </para>
+            <para type="description">
+            > a single directory
+            </para>
+            <para type="description">
+            > a collection of directories piped into the module.
+            </para>
+            <example>
+                <para>All files in all sub-directories in the current location (C:\) will be moved to the current location(C:\) with a confirmation prompt before moving:</para>
+                <code>PS C:\> Invoke-FlattenFolder</code>
+            </example>
+            <example>
+                <para>All files in all sub-directories in C:\Videos\ will be moved to C:\Videos\ without a confirmation prompt:</para>
+                <code>PS C:\> Invoke-FlattenFolder -Directory "C:\Videos" -Force</code>
+            </example>
+            <example>
+                <para>All files in all sub-directories in C:\Videos\ will be moved to C:\Videos\ without a confirmation prompt and all sub-directories will be deleted once the files have been moved:</para>
+                <code>PS C:\> Invoke-FlattenFolder -Directory "C:\Videos" -Force -DeleteSubDirectories</code>
+            </example>
+            <example>
+                <para>All files in all sub-directories in the piped array of directories(C:\Videos\ and C:\Music\) will be moved to their respective parents with a confirmation prompt before moving:</para>
+                <code>PS C:\> "C:\Videos\","C:\Music\" | Invoke-FlattenFolder</code>
+            </example>
+            <para type="link" uri="(https://github.com/trossr32/ps-flatten-folders)">[Github]</para>
+            </summary>
+        </member>
+        <member name="P:FlattenFolders.InvokeFlattenFoldersCmdlet.Directory">
+            <summary>
+            <para type="description">
+            The parent directory where files from all sub-directories will be moved.
+            If neither this nor the Directories parameter are set then the current location will be used.
+            </para>
+            </summary>
+        </member>
+        <member name="P:FlattenFolders.InvokeFlattenFoldersCmdlet.Directories">
+            <summary>
+            <para type="description">
+            A collection of parent directories where files from all sub-directories will be moved.
+            If neither this nor the Directory parameter are set then the current location will be used.
+            </para>
+            </summary>
+        </member>
+        <member name="P:FlattenFolders.InvokeFlattenFoldersCmdlet.Force">
+            <summary>
+            <para type="description">
+            If supplied this bypasses the confirmation prompt before both renaming and moving files.
+            </para>
+            </summary>
+        </member>
+        <member name="P:FlattenFolders.InvokeFlattenFoldersCmdlet.DeleteSubDirectories">
+            <summary>
+            <para type="description">
+            If supplied all subdirectories will be deleted once all files have been moved.
+            </para>
+            </summary>
+        </member>
+        <member name="M:FlattenFolders.InvokeFlattenFoldersCmdlet.BeginProcessing">
+            <summary>
+            Implements the <see cref="M:FlattenFolders.InvokeFlattenFoldersCmdlet.BeginProcessing"/> method for <see cref="T:FlattenFolders.InvokeFlattenFoldersCmdlet"/>.
+            Initialise temporary containers
+            </summary>
+        </member>
+        <member name="M:FlattenFolders.InvokeFlattenFoldersCmdlet.ProcessRecord">
+            <summary>
+            Implements the <see cref="M:FlattenFolders.InvokeFlattenFoldersCmdlet.ProcessRecord"/> method for <see cref="T:FlattenFolders.InvokeFlattenFoldersCmdlet"/>.
+            Validates input directory/directories exist and builds a list of directories to process in the EndProcessing method.
+            </summary>
+        </member>
+        <member name="M:FlattenFolders.InvokeFlattenFoldersCmdlet.EndProcessing">
+            <summary>
+            Implements the <see cref="M:FlattenFolders.InvokeFlattenFoldersCmdlet.EndProcessing"/> method for <see cref="T:FlattenFolders.InvokeFlattenFoldersCmdlet"/>.
+            Perform the folder flattening on the configured directories.
+            </summary>
+        </member>
+        <member name="M:FlattenFolders.InvokeFlattenFoldersCmdlet.PromptYesNo(System.String,System.String)">
+            <summary>
+            Prompts the user with a yes/no option and returns the result as a boolean where 'yes' equals true
+            </summary>
+            <param name="header"></param>
+            <param name="question"></param>
+            <returns>
+            Result of the user's yes/no choice, true if yes and false if no
+            </returns>
+        </member>
+    </members>
+</doc>
