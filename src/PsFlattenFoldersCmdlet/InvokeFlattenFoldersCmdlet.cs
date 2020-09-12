@@ -144,7 +144,7 @@ namespace FlattenFolders
 
         /// <summary>
         /// Implements the <see cref="EndProcessing"/> method for <see cref="InvokeFlattenFoldersCmdlet"/>.
-        /// The majority of the word cloud drawing occurs here.
+        /// Perform the folder flattening on the configured directories.
         /// </summary>
         protected override void EndProcessing()
         {
