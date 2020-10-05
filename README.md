@@ -172,3 +172,9 @@ Initially this module was written in native Powershell but has since been upgrad
 
 - The .NET core version of the module is in the [src](https://github.com/trossr32/ps-flatten-folders/tree/master/src) directory.
 - The Native Powershell version is in the [archived native PS version](https://github.com/trossr32/ps-flatten-folders/tree/master/archived%20native%20PS%20version) directory.
+
+## Contribute
+
+Please raise an issue if you find a bug or want to request a new feature, or create a pull request to contribute.
+
+<a href='https://ko-fi.com/K3K22CEIT' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi4.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
