@@ -17,10 +17,10 @@
   </command:details>
   <maml:description>
     <maml:para>
-      Moves files from all sub-directories to the parent directory. If files with duplicate names are found then their file name will have a guid appended to make them unique.
+      Moves files from all sub-directories to the parent directory. If files with duplicate names are found then their file name will have a GUID appended to make them unique.
     </maml:para>
     <maml:para>
-      Unless the Force parameter is used there will be a prompt for confirmation before both the renaming of any files (if required) and the moving of any files.
+      Supports WhatIf. If supplied this will output a formatted table of the from and to file locations that will result from running the cmdlet.
     </maml:para>
     <maml:para>
       Can be run against:
@@ -56,10 +56,10 @@
       <dev:defaultValue>None</dev:defaultValue>
     </command:parameter>
     <command:parameter required="false" pipelineInput="false" variableLength="false" aliases="F">
-      <maml:name>Force</maml:name>
+      <maml:name>WhatIf</maml:name>
       <maml:description>
         <maml:para>
-          If supplied this bypasses the confirmation prompt before both renaming and moving files.
+          If supplied this will output a formatted table of the from and to file locations that will result from running the cmdlet.
         </maml:para>
       </maml:description>
       <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
@@ -84,25 +84,25 @@
       <dev:code>PS C:\&gt; Invoke-FlattenFolder</dev:code>
       <dev:remarks>
         <maml:para>
-          All files in all sub-directories in the current location (C:\) will be moved to the current location (C:\) with a confirmation prompt before moving.
+          All files in all sub-directories in the current location (C:\) will be moved to the current location (C:\).
         </maml:para>
       </dev:remarks>
     </command:example>
     <command:example>
       <maml:title>Example 2: Using the Force switch</maml:title>
-      <dev:code>PS C:\&gt; Invoke-FlattenFolder -Directory "C:\Videos" -Force</dev:code>
+      <dev:code>PS C:\&gt; Invoke-FlattenFolder -Directory "C:\Videos" -WhatIf</dev:code>
       <dev:remarks>
         <maml:para>
-          All files in all sub-directories in C:\Videos\ will be moved to C:\Videos\ without a confirmation prompt.
+          Displays an output table to terminal detailing that all files in all sub-directories in C:\Videos\ would be moved to C:\Videos\.
         </maml:para>
       </dev:remarks>
     </command:example>
     <command:example>
       <maml:title>Example 3: Using the DeleteSubDirectories switch</maml:title>
-      <dev:code>PS C:\&gt; Invoke-FlattenFolder -Directory "C:\Videos" -Force -DeleteSubDirectories</dev:code>
+      <dev:code>PS C:\&gt; Invoke-FlattenFolder -Directory "C:\Videos" -DeleteSubDirectories</dev:code>
       <dev:remarks>
         <maml:para>
-          All files in all sub-directories in C:\Videos\ will be moved to C:\Videos\ without a confirmation prompt and all sub-directories will be deleted once the files have been moved.
+          All files in all sub-directories in C:\Videos\ will be moved to C:\Videos\ and all sub-directories will be deleted once the files have been moved.
         </maml:para>
       </dev:remarks>
     </command:example>
@@ -111,7 +111,7 @@
       <dev:code>PS C:\&gt; "C:\Videos\","C:\Music\" | Invoke-FlattenFolder</dev:code>
       <dev:remarks>
         <maml:para>
-          All files in all sub-directories in the piped array of directories (C:\Videos\ and C:\Music\) will be moved to their respective parents with a confirmation prompt before moving.
+          All files in all sub-directories in the piped array of directories (C:\Videos\ and C:\Music\) will be moved to their respective parents.
         </maml:para>
       </dev:remarks>
     </command:example>

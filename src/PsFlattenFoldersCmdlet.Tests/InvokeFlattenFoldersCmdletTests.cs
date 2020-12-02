@@ -93,8 +93,7 @@ namespace PsFlattenFoldersCmdlet.Tests
         {
             var cmdlet = new InvokeFlattenFoldersCmdlet
             {
-                Directory = TestRootDir,
-                Force = SwitchParameter.Present
+                Directory = TestRootDir
             };
 
             // TODO - This only works when the cmdlet inherits from Cmdlet (not PSCmdlet). However the cmdlet needs to inherit
