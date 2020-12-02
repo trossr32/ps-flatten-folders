@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Management.Automation;
-using System.Management.Automation.Host;
+using System.Security.Permissions;
+using FlattenFolders.Models;
 
 namespace FlattenFolders
 {
     /// <summary>
     /// <para type="synopsis">Moves files from all sub-directories to the parent directory and optionally delete sub-directories.</para>
     /// <para type="description">
-    /// Moves files from all sub-directories to the parent directory.If files with duplicate names are found then their file name will have a guid appended to make them unique.
+    /// Moves files from all sub-directories to the parent directory.If files with duplicate names are found then their file name will have a GUID appended to make them unique.
     /// </para>
     /// <para type="description">
-    /// Unless the Force parameter is used there will be a prompt for confirmation before both the renaming of any files (if required) and the moving of any files.
+    /// Supports WhatIf. If supplied this will output a formatted table of the from and to file locations that will result from running the cmdlet.
     /// </para>
     /// <para type="description">
     /// Can be run against:
@@ -26,19 +26,19 @@ namespace FlattenFolders
     /// > a collection of directories piped into the module.
     /// </para>
     /// <example>
-    ///     <para>All files in all sub-directories in the current location (C:\) will be moved to the current location(C:\) with a confirmation prompt before moving:</para>
+    ///     <para>All files in all sub-directories in the current location (C:\) will be moved to the current location(C:\):</para>
     ///     <code>PS C:\> Invoke-FlattenFolder</code>
     /// </example>
     /// <example>
-    ///     <para>All files in all sub-directories in C:\Videos\ will be moved to C:\Videos\ without a confirmation prompt:</para>
-    ///     <code>PS C:\> Invoke-FlattenFolder -Directory "C:\Videos" -Force</code>
+    ///     <para>Displays an output table to terminal detailing that all files in all sub-directories in C:\Videos\ would be moved to C:\Videos\:</para>
+    ///     <code>PS C:\> Invoke-FlattenFolder -Directory "C:\Videos" -WhatIf</code>
     /// </example>
     /// <example>
-    ///     <para>All files in all sub-directories in C:\Videos\ will be moved to C:\Videos\ without a confirmation prompt and all sub-directories will be deleted once the files have been moved:</para>
-    ///     <code>PS C:\> Invoke-FlattenFolder -Directory "C:\Videos" -Force -DeleteSubDirectories</code>
+    ///     <para>All files in all sub-directories in C:\Videos\ will be moved to C:\Videos\ and all sub-directories will be deleted once the files have been moved:</para>
+    ///     <code>PS C:\> Invoke-FlattenFolder -Directory "C:\Videos" -DeleteSubDirectories</code>
     /// </example>
     /// <example>
-    ///     <para>All files in all sub-directories in the piped array of directories(C:\Videos\ and C:\Music\) will be moved to their respective parents with a confirmation prompt before moving:</para>
+    ///     <para>All files in all sub-directories in the piped array of directories(C:\Videos\ and C:\Music\) will be moved to their respective parents:</para>
     ///     <code>PS C:\> "C:\Videos\","C:\Music\" | Invoke-FlattenFolder</code>
     /// </example>
     /// <para type="link" uri="(https://github.com/trossr32/ps-flatten-folders)">[Github]</para>
@@ -69,12 +69,11 @@ namespace FlattenFolders
 
         /// <summary>
         /// <para type="description">
-        /// If supplied this bypasses the confirmation prompt before both renaming and moving files.
+        /// If supplied this will output a formatted table of the from and to file locations that will result from running the cmdlet.
         /// </para>
         /// </summary>
         [Parameter(Mandatory = false)]
-        [Alias("F")]
-        public SwitchParameter Force { get; set; }
+        public SwitchParameter WhatIf { get; set; }
 
         /// <summary>
         /// <para type="description">
@@ -87,8 +86,8 @@ namespace FlattenFolders
 
         #endregion
 
-        private List<string> _dirs;
         private bool _isValid;
+        private FileProcessContainer _container;
 
         /// <summary>
         /// Implements the <see cref="BeginProcessing"/> method for <see cref="InvokeFlattenFoldersCmdlet"/>.
@@ -96,7 +95,7 @@ namespace FlattenFolders
         /// </summary>
         protected override void BeginProcessing()
         {
-            _dirs = new List<string>();
+            _container = new FileProcessContainer();
             _isValid = true;
         }
 
@@ -119,7 +118,7 @@ namespace FlattenFolders
                     ThrowTerminatingError(new ErrorRecord(new Exception($"Directory not found: {d}, terminating."), null, ErrorCategory.InvalidArgument, null));
                 });
 
-                _dirs.AddRange(Directories);
+                _container.SourceDirectories.AddRange(Directories);
 
                 return;
             }
@@ -134,12 +133,12 @@ namespace FlattenFolders
                     ThrowTerminatingError(new ErrorRecord(new Exception($"Directory not found: {Directory}, terminating."), null, ErrorCategory.InvalidArgument, null));
                 }
 
-                _dirs.Add(Directory);
+                _container.SourceDirectories.Add(Directory);
 
                 return;
             }
 
-            _dirs.Add(SessionState.Path.CurrentFileSystemLocation.Path);
+            _container.SourceDirectories.Add(SessionState.Path.CurrentFileSystemLocation.Path);
         }
 
         /// <summary>
@@ -151,74 +150,44 @@ namespace FlattenFolders
             if (!_isValid)
                 return;
 
-            List<(string parentDir, string file, string name)> files = new List<(string, string, string)>();
-
-            int subDirCount = 0;
-            
-            _dirs.ForEach(d =>
+            _container.SourceDirectories.ForEach(d =>
             {
-                files.AddRange(System.IO.Directory.GetFiles(d, "*", SearchOption.AllDirectories)
+                _container.Files.AddRange(System.IO.Directory.GetFiles(d, "*", SearchOption.AllDirectories)
                     .ToList()
-                    .Select(f => (d, f, Path.GetFileName(f))));
+                    .Select(f => new SourceFile(d, f, Path.GetFileName(f))));
 
-                subDirCount += System.IO.Directory.GetDirectories(d, "*", SearchOption.AllDirectories).Length;
+                _container.SubDirectoryCount += System.IO.Directory.GetDirectories(d, "*", SearchOption.AllDirectories).Length;
             });
 
-            if (!files.Any())
+            if (!_container.Files.Any())
                 ThrowTerminatingError(new ErrorRecord(new Exception("No files found, terminating."), null, ErrorCategory.InvalidArgument, null));
 
-            // check for duplicate file names
-            List<string> duplicates = files
-                .GroupBy(f => f.name)
-                .Where(g => g.Count() > 1)
-                .Select(g => g.Key)
-                .ToList();
+            // check for duplicate file names and build old to new file mappings
+            _container.BuildDuplicatesAndFileMappings();
 
-            // if we have naming conflicts and the Force parameter has not been passed prompt the user to confirm file renaming
-            if (duplicates.Any() && !Force)
+            // validate the user has the required permissions
+            // TODO - assert this code works as expected
+            //var isValid = ValidateMovePermissions();
+            //if (!isValid)
+            //    return;
+
+            // if this is a 'what if' run then output the expected results
+            if (WhatIf.IsPresent)
             {
-                var dupCount = 0;
+                ProcessWhatIf();
 
-                duplicates.ForEach(d =>
-                {
-                    dupCount += files.Count(f => f.name.Equals(d, StringComparison.OrdinalIgnoreCase));
-                });
-
-                var header = $"{dupCount} files with the same name were found. These files will have a guid appended to the file name to make them unique.";
-                var question = "Are you happy to continue?";
-
-                if (!PromptYesNo(header, question))
-                    return;
-            }
-
-            // if the Force parameter has not been passed calculate affected files and prompt the user to confirm the file move
-            if (!Force)
-            {
-                // build strings required for confirmation message
-                var filesText = $"{files.Count} file{(files.Count == 1 ? "" : "s")}";
-                var subDirText = $"{subDirCount} sub-director{(subDirCount == 1 ? "y" : "ies")}";
-                var dirText = $"{_dirs.Count} parent director{(_dirs.Count == 1 ? "y" : "ies")}{(DeleteSubDirectories ? " and delete all sub-directories" : "")}";
-
-                var header = $"You are about to move {filesText} from {subDirText} into {dirText}";
-                var question = "Are you sure you want to continue?";
-
-                if (!PromptYesNo(header, question))
-                    return;
+                return;
             }
 
             // move all files to their associated parent directory
-            foreach (var file in files)
+            foreach (var fileMapping in _container.FileMappings)
             {
-                var fileName = duplicates.Contains(file.name)
-                    ? $"{file.name}_{Guid.NewGuid()}"
-                    : file.name;
-
-                File.Move(file.file, Path.Combine(file.parentDir, fileName));
+                File.Move(fileMapping.OldFile, fileMapping.NewFile);
             }
 
             // if specified, delete all sub-directories
             if (DeleteSubDirectories)
-                _dirs.ForEach(d =>
+                _container.SourceDirectories.ForEach(d =>
                 {
                     foreach (var sub in System.IO.Directory.GetDirectories(d))
                     {
@@ -228,24 +197,75 @@ namespace FlattenFolders
         }
 
         /// <summary>
-        /// Prompts the user with a yes/no option and returns the result as a boolean where 'yes' equals true
+        /// A WhatIf switch parameter was passed so calculate what will happen and output a table to terminal
         /// </summary>
-        /// <param name="header"></param>
-        /// <param name="question"></param>
-        /// <returns>
-        /// Result of the user's yes/no choice, true if yes and false if no
-        /// </returns>
-        private bool PromptYesNo(string header, string question)
+        private void ProcessWhatIf()
         {
-            var options = new Collection<ChoiceDescription>
+            var filesText = $"{_container.Files.Count} file{(_container.Files.Count == 1 ? "" : "s")}";
+            var subDirText = $"{_container.SubDirectoryCount} sub-director{(_container.SubDirectoryCount == 1 ? "y" : "ies")}";
+            var dirText = $"{_container.SourceDirectories.Count} parent director{(_container.SourceDirectories.Count == 1 ? "y" : "ies")}{(DeleteSubDirectories ? " and all sub-directories would be deleted" : "")}";
+
+            List<(int ix, string dir)> parentDirMappings = _container.SourceDirectories
+                .Select((d, i) => (ix: i, dir: d))
+                .OrderBy(o => o.ix)
+                .ToList();
+
+            // local function to replace file location in output with associated [Parent n] string
+            string ReplaceParentDir(string file)
             {
-                new ChoiceDescription("Yes"),
-                new ChoiceDescription("No")
+                return parentDirMappings.Aggregate(file, (current, mapping) => current.Replace(mapping.dir.TrimEnd('/', '\\'), $"[Parent {mapping.ix}]"));
+            }
+
+            List<string> output = new List<string>
+            {
+                "",
+                $"{filesText} would be moved from {subDirText} into {dirText}",
+                "",
+                "The following table shows file moves where:",
+                "",
             };
 
-            int response = Host.UI.PromptForChoice(header, question, options, 0);
+            output.AddRange(parentDirMappings.Select(m => $"[Parent {m.ix}] = {m.dir}"));
 
-            return response == 0;
+            var maxOldStringLength = _container.FileMappings.Max(f => ReplaceParentDir(f.OldFile).Length);
+            var maxNewStringLength = _container.FileMappings.Max(f => ReplaceParentDir(f.NewFile).Length);
+
+            output.AddRange(new List<string>
+            {
+                "",
+                $"|={"".PadRight(maxOldStringLength, '=')}==={"".PadRight(maxNewStringLength, '=')}=|",
+                $"| {"Old file".PadRight(maxOldStringLength, ' ')} | {"New file".PadRight(maxNewStringLength, ' ')} |",
+                $"|-{"".PadRight(maxOldStringLength, '-')}---{"".PadRight(maxNewStringLength, '-')}-|"
+            });
+
+            output.AddRange(_container.FileMappings.Select(f => $"| {ReplaceParentDir(f.OldFile).PadRight(maxOldStringLength, ' ')} | {ReplaceParentDir(f.NewFile).PadRight(maxNewStringLength, ' ')} |"));
+
+            output.Add($"|={"".PadRight(maxOldStringLength, '=')}==={"".PadRight(maxNewStringLength, '=')}=|");
+            output.Add("");
+
+            WriteObject(output, true);
+        }
+
+        /// <summary>
+        /// Validates whether the user has write permissions to the file sin the supplied directories
+        /// </summary>
+        /// <returns></returns>
+        private bool ValidateMovePermissions()
+        {
+            FileIOPermission f = new FileIOPermission(FileIOPermissionAccess.Write, _container.FileMappings.Select(fm => fm.OldFile).ToArray());
+
+            try
+            {
+                f.Demand();
+            }
+            catch (Exception e)
+            {
+                ThrowTerminatingError(new ErrorRecord(new Exception($"Insufficient permissions to move one or all of the files in the supplied director{(_container.SourceDirectories.Count == 1 ? "y" : "ies")}"), null, ErrorCategory.InvalidArgument, null));
+
+                return false;
+            }
+
+            return true;
         }
     }
 }

@@ -8,10 +8,10 @@
             <summary>
             <para type="synopsis">Moves files from all sub-directories to the parent directory and optionally delete sub-directories.</para>
             <para type="description">
-            Moves files from all sub-directories to the parent directory.If files with duplicate names are found then their file name will have a guid appended to make them unique.
+            Moves files from all sub-directories to the parent directory.If files with duplicate names are found then their file name will have a GUID appended to make them unique.
             </para>
             <para type="description">
-            Unless the Force parameter is used there will be a prompt for confirmation before both the renaming of any files (if required) and the moving of any files.
+            Supports WhatIf. If supplied this will output a formatted table of the from and to file locations that will result from running the cmdlet.
             </para>
             <para type="description">
             Can be run against:
@@ -23,19 +23,19 @@
             > a collection of directories piped into the module.
             </para>
             <example>
-                <para>All files in all sub-directories in the current location (C:\) will be moved to the current location(C:\) with a confirmation prompt before moving:</para>
+                <para>All files in all sub-directories in the current location (C:\) will be moved to the current location(C:\):</para>
                 <code>PS C:\> Invoke-FlattenFolder</code>
             </example>
             <example>
-                <para>All files in all sub-directories in C:\Videos\ will be moved to C:\Videos\ without a confirmation prompt:</para>
-                <code>PS C:\> Invoke-FlattenFolder -Directory "C:\Videos" -Force</code>
+                <para>Displays an output table to terminal detailing that all files in all sub-directories in C:\Videos\ would be moved to C:\Videos\:</para>
+                <code>PS C:\> Invoke-FlattenFolder -Directory "C:\Videos" -WhatIf</code>
             </example>
             <example>
-                <para>All files in all sub-directories in C:\Videos\ will be moved to C:\Videos\ without a confirmation prompt and all sub-directories will be deleted once the files have been moved:</para>
-                <code>PS C:\> Invoke-FlattenFolder -Directory "C:\Videos" -Force -DeleteSubDirectories</code>
+                <para>All files in all sub-directories in C:\Videos\ will be moved to C:\Videos\ and all sub-directories will be deleted once the files have been moved:</para>
+                <code>PS C:\> Invoke-FlattenFolder -Directory "C:\Videos" -DeleteSubDirectories</code>
             </example>
             <example>
-                <para>All files in all sub-directories in the piped array of directories(C:\Videos\ and C:\Music\) will be moved to their respective parents with a confirmation prompt before moving:</para>
+                <para>All files in all sub-directories in the piped array of directories(C:\Videos\ and C:\Music\) will be moved to their respective parents:</para>
                 <code>PS C:\> "C:\Videos\","C:\Music\" | Invoke-FlattenFolder</code>
             </example>
             <para type="link" uri="(https://github.com/trossr32/ps-flatten-folders)">[Github]</para>
@@ -57,10 +57,10 @@
             </para>
             </summary>
         </member>
-        <member name="P:FlattenFolders.InvokeFlattenFoldersCmdlet.Force">
+        <member name="P:FlattenFolders.InvokeFlattenFoldersCmdlet.WhatIf">
             <summary>
             <para type="description">
-            If supplied this bypasses the confirmation prompt before both renaming and moving files.
+            If supplied this will output a formatted table of the from and to file locations that will result from running the cmdlet.
             </para>
             </summary>
         </member>
@@ -89,15 +89,16 @@
             Perform the folder flattening on the configured directories.
             </summary>
         </member>
-        <member name="M:FlattenFolders.InvokeFlattenFoldersCmdlet.PromptYesNo(System.String,System.String)">
+        <member name="M:FlattenFolders.InvokeFlattenFoldersCmdlet.ProcessWhatIf">
             <summary>
-            Prompts the user with a yes/no option and returns the result as a boolean where 'yes' equals true
+            A WhatIf switch parameter was passed so calculate what will happen and output a table to terminal
             </summary>
-            <param name="header"></param>
-            <param name="question"></param>
-            <returns>
-            Result of the user's yes/no choice, true if yes and false if no
-            </returns>
+        </member>
+        <member name="M:FlattenFolders.InvokeFlattenFoldersCmdlet.ValidateMovePermissions">
+            <summary>
+            Validates whether the user has write permissions to the file sin the supplied directories
+            </summary>
+            <returns></returns>
         </member>
     </members>
 </doc>
