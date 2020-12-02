@@ -32,7 +32,7 @@ Import-Module FlattenFolders
 #### -Directories
 *Optional*. A collection of parent directories where files from all sub-directories will be moved. If neither this nor the Directory parameter are set then the current location will be used.
 
-#### -WhatIf (alias -F)
+#### -WhatIf
 *Optional*. If supplied this will output a formatted table of the from and to file locations that will result from running the cmdlet.
 
 #### -DeleteSubDirectories (alias -DS)
