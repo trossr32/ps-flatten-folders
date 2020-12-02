@@ -82,7 +82,7 @@ Given the following directory structure:
 Running the following command...
 
 ```powershell
-PS C:\>@("C:\temp\flatten me\parent a","C:\temp\flatten me\parent b","C:\temp\flatten me\parent c") | Invoke-FlattenFolders -Force -DeleteSubDirectories
+PS C:\>@("C:\temp\flatten me\parent a","C:\temp\flatten me\parent b","C:\temp\flatten me\parent c") | Invoke-FlattenFolders -DeleteSubDirectories
 ```
 
 ...will move all files from each parent directory's sub-directories into the parent directory and then delete the sub-directories. Files with duplicate names will have a Guid appended to their file names. The result will look like this:
