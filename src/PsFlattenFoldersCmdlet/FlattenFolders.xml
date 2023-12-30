@@ -24,19 +24,19 @@
             </para>
             <example>
                 <para>All files in all sub-directories in the current location (C:\) will be moved to the current location(C:\):</para>
-                <code>PS C:\> Invoke-FlattenFolder</code>
+                <code>PS C:\> Invoke-FlattenFolders</code>
             </example>
             <example>
                 <para>Displays an output table to terminal detailing that all files in all sub-directories in C:\Videos\ would be moved to C:\Videos\:</para>
-                <code>PS C:\> Invoke-FlattenFolder -Directory "C:\Videos" -WhatIf</code>
+                <code>PS C:\> Invoke-FlattenFolders -Directory "C:\Videos" -WhatIf</code>
             </example>
             <example>
                 <para>All files in all sub-directories in C:\Videos\ will be moved to C:\Videos\ and all sub-directories will be deleted once the files have been moved:</para>
-                <code>PS C:\> Invoke-FlattenFolder -Directory "C:\Videos" -DeleteSubDirectories</code>
+                <code>PS C:\> Invoke-FlattenFolders -Directory "C:\Videos" -DeleteSubDirectories</code>
             </example>
             <example>
                 <para>All files in all sub-directories in the piped array of directories(C:\Videos\ and C:\Music\) will be moved to their respective parents:</para>
-                <code>PS C:\> "C:\Videos\","C:\Music\" | Invoke-FlattenFolder</code>
+                <code>PS C:\> "C:\Videos\","C:\Music\" | Invoke-FlattenFolders</code>
             </example>
             <para type="link" uri="(https://github.com/trossr32/ps-flatten-folders)">[Github]</para>
             </summary>

@@ -32,21 +32,21 @@ function Invoke-FlattenFolders {
     .EXAMPLE
     All files in all sub-directories in the current location (C:\) will be moved to the current location (C:\) with a 
     confirmation prompt before moving:
-    PS C:\> Invoke-FlattenFolder
+    PS C:\> Invoke-FlattenFolders
     
     .EXAMPLE
     All files in all sub-directories in C:\Videos\ will be moved to C:\Videos\ without a confirmation prompt:
-    PS C:\> Invoke-FlattenFolder -Directory "C:\Videos" -Force
+    PS C:\> Invoke-FlattenFolders -Directory "C:\Videos" -Force
     
     .EXAMPLE
     All files in all sub-directories in C:\Videos\ will be moved to C:\Videos\ without a confirmation prompt and all
     sub-directories will be deleted once the files have been moved:
-    PS C:\> Invoke-FlattenFolder -Directory "C:\Videos" -Force -DeleteSubDirectories
+    PS C:\> Invoke-FlattenFolders -Directory "C:\Videos" -Force -DeleteSubDirectories
     
     .EXAMPLE
     All files in all sub-directories in the piped array of directories (C:\Videos\ and C:\Music\) will be moved to their 
     respective parents with a confirmation prompt before moving:
-    PS C:\> "C:\Videos\","C:\Music\" | Invoke-FlattenFolder
+    PS C:\> "C:\Videos\","C:\Music\" | Invoke-FlattenFolders
     #>
 
     [CmdletBinding()]
