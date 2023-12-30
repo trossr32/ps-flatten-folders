@@ -81,7 +81,7 @@
   <command:examples>
     <command:example>
       <maml:title>Example 1: No parameters</maml:title>
-      <dev:code>PS C:\&gt; Invoke-FlattenFolder</dev:code>
+      <dev:code>PS C:\&gt; Invoke-FlattenFolders</dev:code>
       <dev:remarks>
         <maml:para>
           All files in all sub-directories in the current location (C:\) will be moved to the current location (C:\).
@@ -90,7 +90,7 @@
     </command:example>
     <command:example>
       <maml:title>Example 2: Using the Force switch</maml:title>
-      <dev:code>PS C:\&gt; Invoke-FlattenFolder -Directory "C:\Videos" -WhatIf</dev:code>
+      <dev:code>PS C:\&gt; Invoke-FlattenFolders -Directory "C:\Videos" -WhatIf</dev:code>
       <dev:remarks>
         <maml:para>
           Displays an output table to terminal detailing that all files in all sub-directories in C:\Videos\ would be moved to C:\Videos\.
@@ -99,7 +99,7 @@
     </command:example>
     <command:example>
       <maml:title>Example 3: Using the DeleteSubDirectories switch</maml:title>
-      <dev:code>PS C:\&gt; Invoke-FlattenFolder -Directory "C:\Videos" -DeleteSubDirectories</dev:code>
+      <dev:code>PS C:\&gt; Invoke-FlattenFolders -Directory "C:\Videos" -DeleteSubDirectories</dev:code>
       <dev:remarks>
         <maml:para>
           All files in all sub-directories in C:\Videos\ will be moved to C:\Videos\ and all sub-directories will be deleted once the files have been moved.
@@ -108,7 +108,7 @@
     </command:example>
     <command:example>
       <maml:title>Example 4: Piping input</maml:title>
-      <dev:code>PS C:\&gt; "C:\Videos\","C:\Music\" | Invoke-FlattenFolder</dev:code>
+      <dev:code>PS C:\&gt; "C:\Videos\","C:\Music\" | Invoke-FlattenFolders</dev:code>
       <dev:remarks>
         <maml:para>
           All files in all sub-directories in the piped array of directories (C:\Videos\ and C:\Music\) will be moved to their respective parents.

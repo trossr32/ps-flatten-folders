@@ -121,25 +121,25 @@ PS C:\>@("C:\temp\flatten me\parent a","C:\temp\flatten me\parent b","C:\temp\fl
 All files in all sub-directories in the current location (C:\) will be moved to the current location (C:\):
 
 ```powershell
-PS C:\> Invoke-FlattenFolder
+PS C:\> Invoke-FlattenFolders
 ```
 
 Displays an output table to terminal detailing that all files in all sub-directories in C:\Videos\ would be moved to C:\Videos\:
 
 ```powershell
-PS C:\> Invoke-FlattenFolder -Directory "C:\Videos" -WhatIf
+PS C:\> Invoke-FlattenFolders -Directory "C:\Videos" -WhatIf
 ```
 
 All files in all sub-directories in C:\Videos\ will be moved to C:\Videos\ and all sub-directories will be deleted once the files have been moved:
 
 ```powershell
-PS C:\> Invoke-FlattenFolder -Directory "C:\Videos" -DeleteSubDirectories
+PS C:\> Invoke-FlattenFolders -Directory "C:\Videos" -DeleteSubDirectories
 ```
 
 All files in all sub-directories in the piped array of directories (C:\Videos\ and C:\Music\) will be moved to their respective parents:
 
 ```powershell
-PS C:\> "C:\Videos\","C:\Music\" | Invoke-FlattenFolder
+PS C:\> "C:\Videos\","C:\Music\" | Invoke-FlattenFolders
 ```
 
 ## Building the module and importing locally
