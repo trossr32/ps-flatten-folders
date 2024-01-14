@@ -168,7 +168,7 @@ Import-Module "C:\Users\[User]\Documents\PowerShell\Modules\FlattenFolders\Flatt
 
 ## Notes
 
-Initially this module was written in native Powershell but has since been upgraded to a .NET core 3.1 Cmdlet. I've archived the Powershell version in case anyone is interested in viewing the differences between the implementations.
+Initially this module was written in native Powershell but has since been upgraded to a .NET 8 Cmdlet. I've archived the Powershell version in case anyone is interested in viewing the differences between the implementations.
 
 - The .NET core version of the module is in the [src](https://github.com/trossr32/ps-flatten-folders/tree/master/src) directory.
 - The Native Powershell version is in the [archived native PS version](https://github.com/trossr32/ps-flatten-folders/tree/master/archived%20native%20PS%20version) directory.
